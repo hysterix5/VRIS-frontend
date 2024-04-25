@@ -17,8 +17,8 @@
   </select>
 
   <input v-if="selectedApprehension === 'antismoking'" v-model="cigaretteClassification" type="text" placeholder="Classify Cigarettes..." class="p-2 border rounded-md">
+  </div>
 </div>
-        </div>
   
 
   
