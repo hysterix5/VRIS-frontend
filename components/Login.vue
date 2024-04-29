@@ -12,15 +12,12 @@
                     <div class="w-full mt-4">
                         <form class="form-horizontal w-3/4 mx-auto" @submit.prevent="loginUser">
                             <div class="flex flex-col mt-4">
-                                <input id="email" v-model="userData.email" type="email" class="flex-grow h-8 px-2 border rounded border-grey-400" placeholder="Email">
+                                <input id="text" v-model="userData.username" type="text" class="flex-grow h-8 px-2 border rounded border-grey-400" placeholder="Username">
                             </div>
                             <div class="flex flex-col mt-4">
                                 <input id="password" v-model="userData.password" type="password" class="flex-grow h-8 px-2 rounded border border-grey-400" required placeholder="Password">
                             </div>
                             <div v-if="errorMessage" class="text-red-500 mt-3">{{ errorMessage }}</div>
-                            <div class="flex items-center mt-4">
-                                <input type="checkbox" name="remember" id="remember" class="mr-2"> <label for="remember" class="text-sm text-grey-dark">Remember Me</label>
-                            </div>
                             <div class="flex flex-col mt-8">
                                 <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white text-sm font-semibold py-2 px-4 rounded">
                                     Login
@@ -53,7 +50,7 @@ export default {
 
 
     const userData = ref({
-      email: '',
+      username: '',
       password: ''
     });
     const errorMessage = ref('');
@@ -72,7 +69,7 @@ export default {
                 // Assuming your Laravel API responds with data, you can handle the response here
                 localStorage.setItem("_token", response.data.token)
                 const { firstname, lastname } = response.data.data.user;
-                viceStore.user.email = userData.value.email;
+                viceStore.user.username = userData.value.username;
                 viceStore.user.password = userData.value.password;
                 viceStore.user.firstname = firstname;
                 viceStore.user.lastname = lastname;
@@ -83,7 +80,7 @@ export default {
         }
 
         // reset the form fields
-        userData.value.email = '';
+        userData.value.username = '';
         userData.value.password = '';
 
     } catch (error) {

@@ -4,6 +4,10 @@
         <h1 class="text-2xl font-semibold mb-4">Registration Form</h1>
         <form @submit.prevent="registerUser">
           <div class="mb-4">
+            <label for="firstName" class="block text-sm font-medium text-gray-700">Username:</label>
+            <input type="text" id="username" v-model="formData.username" required class="mt-1 p-2 w-full border border-gray-300 rounded-md">
+          </div>
+          <div class="mb-4">
             <label for="firstName" class="block text-sm font-medium text-gray-700">First Name:</label>
             <input type="text" id="firstName" v-model="formData.firstname" required class="mt-1 p-2 w-full border border-gray-300 rounded-md">
           </div>
@@ -32,6 +36,7 @@ import axios from 'axios';
     data() {
       return {
         formData: {
+          username: '',
           firstname: '',
           lastname: '',
           email: '',

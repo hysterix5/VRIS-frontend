@@ -8,7 +8,7 @@
     </div>
 
     <div class="overflow-x-auto bg-white rounded-lg shadow-lg">
-      <div v-if="selectedApprehensionType === 'Violators'">
+      <div v-if="selectedApprehensionType === 'Individuals'">
         <table class="table-auto w-full">
           <thead>
             <tr>
@@ -22,7 +22,7 @@
           <tbody>
             <tr v-for="violator in violators" :key="violator.id" class="border-b border-gray-200">
               <td class="px-4 py-2 text-center">{{ violator.id }}</td>
-              <td class="px-4 py-2 text-center">{{ violator.firstname }}</td>
+              <td class="px-4 py-2 text-center">{{ violator.firstname + (violator.middlename ? ' ' + violator.middlename : '') + ' ' + violator.lastname }}</td>
               <td class="px-4 py-2 text-center">{{ violator.address }}</td>
               <td class="px-4 py-2 text-center">{{ violator.apprehension_type }}</td>
               <td class="px-4 py-2 text-center">
@@ -92,7 +92,7 @@ export default {
   data() {
     return {
       selectedApprehensionType: '',
-      apprehensionTypes: ['Violators', 'Establishments', 'Public Conveyances'],
+      apprehensionTypes: ['Individuals', 'Establishments', 'Public Conveyances'],
 
       violators: [],
       establishments: [],

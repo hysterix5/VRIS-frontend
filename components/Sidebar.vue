@@ -1,10 +1,10 @@
 <template>
   <!-- Sidebar component -->
-  <div class="flex flex-col bg-white text-gray-700 h-screen w-full max-w-[20rem]">
+  <div class="flex flex-col bg-white text-gray-700 h-screen w-full max-w-[15rem]">
     <!-- Logo and title -->
     <div class="mb-6 mt-3 p-4 flex flex-col items-center text-center justify-center">
       <NuxtImg src="/img/vris_logo.png" sizes="75px"/>
-      <h5 class="block antialiased tracking-normal font-sans text-xl font-semibold leading-snug text-gray-900">Vices Regulation Information Systems</h5>
+      <h5 class="block antialiased tracking-normal font-sans text-xl font-semibold leading-snug text-gray-900 mt-3">VRIS</h5>
     </div>
     <!-- Sidebar navigation -->
     <nav class="flex flex-col gap-1 min-w-[240px] p-2 font-sans text-base font-normal text-gray-700">

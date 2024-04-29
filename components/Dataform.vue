@@ -16,8 +16,12 @@
     <option v-for="type in apprehensionTypes" :key="type.value" :value="type.value" class="p-2">{{ type.label }}</option>
   </select>
 
-  <input v-if="selectedApprehension === 'antismoking'" v-model="cigaretteClassification" type="text" placeholder="Classify Cigarettes..." class="p-2 border rounded-md">
-  </div>
+  <select v-if="selectedApprehension === 'antismoking'" v-model="cigaretteClassification" class="p-2 border rounded-md">
+  <option value="" disabled selected>Classify Cigarettes...</option>
+  <option value="E-cigarettes">E-Cigarettes</option>
+  <option value="Tobacco">Tobacco</option>
+  </select>  
+</div>
 </div>
   
 
@@ -27,7 +31,7 @@
           <!-- Individual Form -->
           <section>
             <form @submit.prevent="submitViolator">
-    <h1 class="font-bold p-4">Violator</h1>
+    <h1 class="font-bold p-4">Individual</h1>
     <hr class="border-t-2 border-black">
     <div class="grid grid-rows-3">
 
@@ -36,10 +40,10 @@
         <div class="border-b border-black">
             <div class="m-3">
                 <label for="name" class="block">FIRST NAME<span class="text-red-600">*</span></label>
-                <input v-model="violator.firstname" type="text" class="w-full border">
+                <input v-model="violator.firstname" type="text" class="w-full border" >
             </div>
-         
         </div>
+
         <div class="border border-black border-t-0 ">
             <div class="m-3">
                 <label for="course" class="block">MIDDLE NAME</label>
@@ -49,7 +53,7 @@
         <div class="border-b border-black">
             <div class="m-3">
                 <label for="year" class="block">LAST NAME<span class="text-red-600">*</span></label>
-                <input v-model="violator.lastname" type="text" class="w-full border">
+                <input v-model="violator.lastname" type="text" class="w-full border" >
             </div>
         </div>
       </div>
@@ -60,13 +64,19 @@
             <div class="m-3">
              <div class="grid grid-cols-2">
                 <div class="pr-3">
-                <label for="name" class="block">SUFFIX<span class="text-red-600">*</span></label>
-                <input v-model="violator.suffix" type="text" class="w-full border">
+                <label for="name" class="block">SUFFIX</label>
+                <select v-model="violator.suffix" class="w-full border">
+                  <option value=""></option>
+                  <option v-for="suffix in nameSuffixes" :value="suffix">{{ suffix }}</option>
+                </select>
             </div>
-             <div>
-                <label for="name" class="block">SEX<span class="text-red-600">*</span></label>
-                <input v-model="violator.sex" type="text" class="w-full border">
-             </div>
+            <div>
+             <label for="sex" class="block">SEX<span class="text-red-600">*</span></label>
+              <select v-model="violator.sex" id="sex" class="w-full border" >
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              </select>
+            </div>
             </div>
          </div>
         </div>
@@ -74,15 +84,15 @@
     
         <div class="border border-black border-t-0">
             <div class="m-3">
-                <label class="block">BIRTHDATE</label>
-                <input v-model="violator.birthdate" type="date" class="w-full border">
+                <label class="block">BIRTHDATE<span class="text-red-600">*</span></label>
+                <input v-model="violator.birthdate" type="date" class="w-full border" >
             </div>
         </div>
 
         <div class="border-b border-black">
             <div class="m-3">
-                <label class="block">DQRCODE<span class="text-red-600">*</span></label>
-                <input v-model="violator.dqrcode" type="text"class="w-full border">
+                <label class="block">ID Issued for Reference</label>
+                <input v-model="violator.referenceid" type="text"class="w-full border">
             </div>   
         </div>
       </div>
@@ -92,18 +102,42 @@
         
         <div class="border border-black border-t-0 border-x-0">
             <div class="m-3">
-                <label class="block">OCCUPATION</label>
-                <input v-model="violator.occupation" type="text" class="w-full border">
+                <label class="block">OCCUPATION<span class="text-red-600">*</span></label>
+                <input v-model="violator.occupation" type="text" class="w-full border" >
             </div>
         </div>
     
-        <div class="border border-black border-t-0 border-r-0 col-span-2">
+<!-- District dropdown -->
+<div class="border border-black border-t-0 border-r-0">
+    <div class="m-3">
+        <label class="block">DISTRICT<span class="text-red-600">*</span></label>
+        <select v-model="selectedDistrict" class="w-full border" required @change="filterBarangaysByDistrict">
+            <option value="" disabled selected>Select District</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+        </select>
+    </div>
+</div>
+
+<!-- Barangay dropdown -->
+<div class="border border-black border-t-0 border-r-0" :class="{ 'opacity-50 bg-gray-300': !selectedDistrict }">
+    <div class="m-3">
+        <label class="block">BARANGAY<span class="text-red-600">*</span></label>
+        <select v-model="selectedBarangay" class="w-full border" :disabled="!selectedDistrict" required>
+            <option v-for="barangay in filteredBarangays" :key="barangay.barangay_name" :value="barangay.barangay_name">{{ barangay.barangay_name }}</option>
+        </select>
+    </div>
+</div>
+      </div>
+    </div>
+    <div class="grid grid-cols-3">
+        <div class="border-b border-black col-span-3">
             <div class="m-3">
-                <label class="block">ADDRESS</label>
-                <input v-model="violator.address" type="text" class="w-full border">
+                <label for="name" class="block">ADDRESS<span class="text-red-600">*</span></label>
+                <input v-model="violator.address" type="text" class="w-full border" >
             </div>
         </div>
-      </div>
     </div>
     <div class="flex justify-end p-4">
               <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Submit</button>
@@ -126,13 +160,13 @@
                     <div class="border-b border-black col-span-2">
                         <div class="m-3">
                             <label for="name" class="block">NAME OF ESTABLISHMENT<span class="text-red-600">*</span></label>
-                            <input v-model="establishment.name" type="text" name="name" id="name" class="w-full border">
+                            <input v-model="establishment.name" type="text" name="name" id="name" class="w-full border" required>
                         </div>
                     </div>
                     <div class="border border-black border-t-0 border-r-0">
                         <div class="m-3">
-                            <label for="course" class="block">TYPE OF ESTABLISHMENT</label>
-                            <input v-model="establishment.establishment_type" type="text" name="course" id="course" class="w-full border">
+                            <label for="course" class="block">TYPE OF ESTABLISHMENT<span class="text-red-600">*</span></label>
+                            <input v-model="establishment.establishment_type" type="text" name="course" id="course" class="w-full border" required>
                         </div>
                     </div>
                 </div>
@@ -141,20 +175,20 @@
                 <div class="grid grid-cols-3">
                     <div class="border border-black border-t-0 border-l-0">
                         <div class="m-3">
-                            <label class="block">REGISTERED OWNER</label>
-                            <input v-model="establishment.registered_owner" type="text" class="w-full border">
+                            <label class="block">REGISTERED OWNER<span class="text-red-600">*</span></label>
+                            <input v-model="establishment.registered_owner" type="text" class="w-full border" required>
                         </div>
                     </div>
                     <div class="border-b border-black">
                         <div class="m-3">
                             <label class="block">ADDRESS<span class="text-red-600">*</span></label>
-                            <input v-model="establishment.address" type="text" class="w-full border">
+                            <input v-model="establishment.address" type="text" class="w-full border" required>
                         </div>
                     </div>
                     <div class="border border-black border-t-0 border-r-0">
                         <div class="m-3">
-                            <label class="block">BUSINESS PERMIT NO.</label>
-                            <input v-model="establishment.permit" type="text" class="w-full border">
+                            <label class="block">BUSINESS PERMIT NO.<span class="text-red-600">*</span></label>
+                            <input v-model="establishment.permit" type="text" class="w-full border" required>
                         </div>
                     </div>
                 </div>
@@ -190,13 +224,13 @@
                     <div class="border-b border-black">
                         <div class="m-3">
                             <label for="name" class="block">NAME OF DRIVER<span class="text-red-600">*</span></label>
-                            <input v-model="public_conveyances.driver_name" type="text" name="name" id="name" class="w-full border">
+                            <input v-model="public_conveyances.driver_name" type="text" name="name" id="name" class="w-full border" required>
                         </div>
                     </div>
                     <div class="border border-black border-t-0 border-r-0 col-span-2">
                         <div class="m-3">
-                            <label for="course" class="block">PLACE OF APPREHENSION</label>
-                            <input v-model="public_conveyances.apprehension_place" type="text" name="course" id="course" class="w-full border">
+                            <label for="course" class="block">PLACE OF APPREHENSION<span class="text-red-600">*</span></label>
+                            <input v-model="public_conveyances.apprehension_place" type="text" name="course" id="course" class="w-full border" required>
                         </div>
                     </div>
                 </div>
@@ -205,14 +239,14 @@
                 <div class="grid grid-cols-2">
                     <div class="border border-black border-t-0 border-l-0">
                         <div class="m-3">
-                            <label class="block">REGISTERED OWNER</label>
-                            <input v-model="public_conveyances.registered_owner" type="text" class="w-full border">
+                            <label class="block">REGISTERED OWNER<span class="text-red-600">*</span></label>
+                            <input v-model="public_conveyances.registered_owner" type="text" class="w-full border" required>
                         </div>
                     </div>
                     <div class="border-b border-black">
                         <div class="m-3">
                             <label class="block">OWNER'S ADDRESS<span class="text-red-600">*</span></label>
-                            <input v-model="public_conveyances.owner_address" type="text" class="w-full border">
+                            <input v-model="public_conveyances.owner_address" type="text" class="w-full border" required>
                         </div>
                     </div>
                 </div>
@@ -222,15 +256,15 @@
 
                     <div class="border border-black border-t-0 border-l-0">
                         <div class="m-3">
-                            <label class="block">PLATE NO.</label>
-                            <input v-model="public_conveyances.plate_no" type="text" class="w-full border">
+                            <label class="block">PLATE NO.<span class="text-red-600">*</span></label>
+                            <input v-model="public_conveyances.plate_no" type="text" class="w-full border" required>
                         </div>
                     </div>
 
                     <div class="border border-black border-t-0 border-x-0">
                         <div class="m-3">
-                            <label class="block">LICENSE NO.</label>
-                            <input v-model="public_conveyances.license_no" type="text" class="w-full border">
+                            <label class="block">LICENSE NO.<span class="text-red-600">*</span></label>
+                            <input v-model="public_conveyances.license_no" type="text" class="w-full border" required>
                         </div>
                     </div>
                 </div>
@@ -275,7 +309,7 @@
          birthdate: '',
          suffix: '',
          occupation: '',
-         dqrcode: '',
+         referenceid: '',
          apprehension_type: '',
        },
        establishment: {
@@ -295,10 +329,24 @@
          registered_owner: '',
          owner_address: '',
          apprehension_type: '',
-       }
+       },
+       nameSuffixes: ['Jr.', 'Sr.', 'II', 'III', 'IV'],
+       selectedDistrict: '', // Selected district
+       selectedBarangay: '', // Selected barangay
+       barangays: [], // Array to store all barangays
+       filteredBarangays: [] // Array to store filtered barangays based on district
      };
    },
+   async mounted() {
+    await this.fetchBarangay();
+  },
    methods: {
+    filterBarangaysByDistrict() {
+        // Filter the barangays based on the selected district
+        this.filteredBarangays = this.barangays.filter(barangay => barangay.district == this.selectedDistrict);
+        // Reset the selected barangay when the district changes
+        this.selectedBarangay = '';
+    },
     async submitViolator() {
     try {
       this.violator.apprehension_type = this.selectedApprehension; 
@@ -309,8 +357,8 @@
       this.resetViolatorForm();
       alert('Violator data submitted successfully!');
     } catch (error) {
-      console.error('Error submitting violator data:', error);
-      alert('Error submitting violator data. Please try again.');
+      console.error('Error submitting violator data:', error.response.data.message);
+      alert(error.response.data.message);
     }
   },
   async submitEstablishment() {
@@ -343,6 +391,17 @@
       alert('Error submitting public conveyances data. Please try again.');
     }
   },
+
+  async fetchBarangay() {
+    try {
+        const response = await axios.get('http://localhost:8000/api/fetch_barangay');
+        this.barangays = response.data;
+        console.log(this.barangays);
+    } catch (error) {
+        console.error('Error fetching barangay data:', error);
+        // Handle error
+    }
+},
      resetViolatorForm() {
        // Reset violator form fields
        this.violator = {
@@ -354,7 +413,7 @@
          birthdate: '',
          suffix: '',
          occupation: '',
-         dqrcode: ''
+         referenceid: ''
        };
      },
      resetEstablishmentForm() {
