@@ -9,14 +9,14 @@
             <option v-for="apprehension in apprehensions" :key="apprehension.value" :value="apprehension.value" class="p-2">{{ apprehension.label }}</option>
           </select>
   
-          <div v-if="selectedApprehension === 'liquor' || selectedApprehension === 'antismoking'">
+          <div v-if="selectedApprehension === 'Liquor' || selectedApprehension === 'Anti-Smoking'">
   <!-- Dropdown for Liquor or Anti-Smoking Type -->
   <select v-model="selectedApprehensionType" class="p-2 border rounded-md mb-3 sm:mb-0 sm:mr-3">
     <option value="" disabled selected>Select Type</option>
     <option v-for="type in apprehensionTypes" :key="type.value" :value="type.value" class="p-2">{{ type.label }}</option>
   </select>
 
-  <select v-if="selectedApprehension === 'antismoking'" v-model="cigaretteClassification" class="p-2 border rounded-md">
+  <select v-if="selectedApprehension === 'Anti-Smoking'" v-model="cigaretteClassification" class="p-2 border rounded-md">
   <option value="" disabled selected>Classify Cigarettes...</option>
   <option value="E-cigarettes">E-Cigarettes</option>
   <option value="Tobacco">Tobacco</option>
@@ -27,7 +27,7 @@
 
   
         <!-- Display forms based on selected apprehension type -->
-        <div v-if="selectedApprehensionType === 'individual' || selectedApprehension === 'sobriety'">
+        <div v-if="selectedApprehensionType === 'individual' || selectedApprehension === 'Sobriety'">
           <!-- Individual Form -->
           <section>
             <form @submit.prevent="submitViolator">
@@ -135,7 +135,7 @@
         <div class="border-b border-black col-span-3">
             <div class="m-3">
                 <label for="name" class="block">ADDRESS<span class="text-red-600">*</span></label>
-                <input v-model="violator.address" type="text" class="w-full border" >
+                <input v-model="violator.address" type="text" class="w-full border" placeholder="Block/Lot/House no./Subdivision/Village" required>
             </div>
         </div>
     </div>
@@ -291,9 +291,9 @@
        selectedAntiSmokingType: '', // Selected anti-smoking type
        cigaretteClassification: '', // Input field value for classification of cigarettes
        apprehensions: [
-         { label: 'Sobriety', value: 'sobriety' },
-         { label: 'Liquor', value: 'liquor' },
-         { label: 'Anti-Smoking', value: 'antismoking' }
+         { label: 'Sobriety', value: 'Sobriety' },
+         { label: 'Liquor', value: 'Liquor' },
+         { label: 'Anti-Smoking', value: 'Anti-Smoking' }
        ],
        apprehensionTypes: [
          { label: 'Individual', value: 'individual' },
@@ -348,19 +348,25 @@
         this.selectedBarangay = '';
     },
     async submitViolator() {
-    try {
-      this.violator.apprehension_type = this.selectedApprehension; 
-      console.log(this.violator)
-      const response = await axios.post('http://localhost:8000/api/violator', this.violator);
-      console.log('Response:', response.data);
-      // Reset form fields after successful submission
-      this.resetViolatorForm();
-      alert('Violator data submitted successfully!');
-    } catch (error) {
-      console.error('Error submitting violator data:', error.response.data.message);
-      alert(error.response.data.message);
+  try {
+    this.violator.apprehension_type = this.selectedApprehension; 
+    // Check if district and barangay are already present in the address
+    const addressParts = this.violator.address.split(',');
+    const hasDistrictAndBarangay = addressParts.some(part => part.trim().startsWith('District') || this.barangays.some(barangay => part.trim() === barangay));
+    if (!hasDistrictAndBarangay) {
+      this.violator.address += `, District ${this.selectedDistrict}, ${this.selectedBarangay}`;
     }
-  },
+    console.log(this.violator)
+    const response = await axios.post('http://localhost:8000/api/violator', this.violator);
+    console.log('Response:', response.data);
+    // Reset form fields after successful submission
+    this.resetViolatorForm();
+    alert('Violator data submitted successfully!');
+  } catch (error) {
+    console.error('Error submitting violator data:', error.response.data.message);
+    alert(error.response.data.message);
+  }
+},
   async submitEstablishment() {
     try { 
       this.establishment.apprehension_type = this.selectedApprehension; // Assign selected apprehension to the form data
