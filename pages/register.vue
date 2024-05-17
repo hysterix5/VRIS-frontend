@@ -19,6 +19,10 @@
             <label for="email" class="block text-sm font-medium text-gray-700">Email Address:</label>
             <input type="email" id="email" v-model="formData.email" required class="mt-1 p-2 w-full border border-gray-300 rounded-md">
           </div>
+          <select class="p-2 border mb-4" v-model="selectedAccessLevel" required>
+            <option value="" disabled selected>Set Access Level</option>
+            <option option v-for="level in accessLevels" :key="level.value" :value="level.value" class="p-2">{{ level.value }}</option>
+          </select> 
           <div class="mb-4">
             <label for="password" class="block text-sm font-medium text-gray-700">Password:</label>
             <input type="password" id="password" v-model="formData.password" required class="mt-1 p-2 w-full border border-gray-300 rounded-md">
@@ -40,14 +44,26 @@ import axios from 'axios';
           firstname: '',
           lastname: '',
           email: '',
+          access_level: '',
           password: ''
+        },
+        accessLevels: [
+        {
+          value: 'Admin'
+        },
+        {
+          value: 'User',
+
         }
+        ], 
+        selectedAccessLevel: '',
       };
     },
     methods: {
       async registerUser() {
         try {
           // Make a POST request to your Laravel backend
+          this.formData.access_level = this.selectedAccessLevel;
           const response = await axios.post('http://127.0.0.1:8000/api/userRegister', this.formData);
           
           // Handle the response from the backend

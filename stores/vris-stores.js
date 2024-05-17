@@ -7,6 +7,8 @@ export const useViceStore = defineStore('vice', {
             password: '',
             firstname: '',
             lastname: '',
+            username: '',
+            access_level: '',
         }
     }),
     persist: true,

@@ -25,9 +25,9 @@
                             </div>
                         </form>
                         <div class="text-center items-center mt-4">
-                            <NuxtLink class="no-underline hover:underline text-blue-dark text-xs" to="/register">
+                            <!-- <NuxtLink class="no-underline hover:underline text-blue-dark text-xs" to="/register">
                                 Sign Up
-                            </NuxtLink>
+                            </NuxtLink> -->
                         </div>
                         <NuxtImg src="/img/davao.png" alt="Image" class="mx-auto mt-8" sizes="150px"/>
                     </div>
@@ -69,10 +69,12 @@ export default {
                 // Assuming your Laravel API responds with data, you can handle the response here
                 localStorage.setItem("_token", response.data.token)
                 const { firstname, lastname } = response.data.data.user;
+                console.log(response.data.data.user);
                 viceStore.user.username = userData.value.username;
                 viceStore.user.password = userData.value.password;
                 viceStore.user.firstname = firstname;
                 viceStore.user.lastname = lastname;
+                viceStore.user.access_level = response.data.data.user.access_level;
                 await navigateTo('/main');
             } else {
                 errorMessage.value = "User data not found";

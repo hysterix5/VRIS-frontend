@@ -8,17 +8,18 @@
         @change="handleFileUpload"
       />
       <button
-        class="bg-gray-50 border border-gray-600 text-gray-900 bg-primary-600 hover:bg-primary-700 focus:ring-2 focus:outline-none focus:ring-primary-300 font-lg rounded-lg text-sm md:text-xs px-4 py-2 text-center"
+        class="bg-white border text-blue-500 border-blue-500 hover:bg-blue-500 hover:text-white font-bold py-2 px-4 mr-3 rounded"
         @click="$refs.fileInput.click()"
       >
-        Upload
+      <Icon name="material-symbols:add-photo-alternate-outline" style="width: 20px; height: 20px;" /> Upload Images
       </button>
       <button
         v-if="pdfDataUrl"
-        class="bg-gray-50 border border-gray-600 text-gray-900 bg-primary-600 hover:bg-primary-700 focus:ring-2 focus:outline-none focus:ring-primary-300 font-lg rounded-lg text-sm md:text-xs px-4 py-2 text-center mt-4"
+        class="bg-white border text-blue-500 border-blue-500 hover:bg-blue-500 hover:text-white font-bold py-2 px-4 mr-3 rounded"
         @click="downloadPDF"
       >
-        Download PDF
+      <Icon name="material-symbols:picture-as-pdf-outline" style="width: 20px; height: 20px;" />
+        Download Images as PDF
       </button>
     </div>
   </template>
