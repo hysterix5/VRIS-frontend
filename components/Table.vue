@@ -30,8 +30,8 @@
               <td class="px-4 py-2 text-center">{{ violator.firstname + (violator.middlename ? ' ' + violator.middlename : '') + ' ' + violator.lastname }}</td>
               <td class="px-4 py-2 text-center">{{ violator.address }}</td>
               <td class="px-4 py-2 text-center">{{ violator.apprehension.violation }}</td>
-              <td class="px-4 py-2 text-center">
-                <button class="px-3 py-1 bg-blue-500 text-white rounded-md">Edit</button>
+              <td class="px-4 py-2 text-center text-green-600">
+                1st Offense
               </td>
             </tr>
           </tbody>
@@ -48,7 +48,7 @@
               <th class="px-4 py-2">Establishment Name</th>
               <th class="px-4 py-2">Address</th>
               <th class="px-4 py-2">Apprehension Type</th>
-              <th class="px-4 py-2">Actions</th>
+              <th class="px-4 py-2">Offense</th>
             </tr>
           </thead>
           <!-- Table body -->
@@ -58,8 +58,8 @@
               <td class="px-4 py-2 text-center">{{ establishment.name }}</td>
               <td class="px-4 py-2 text-center">{{ establishment.address }}</td>
               <td class="px-4 py-2 text-center">{{ establishment.apprehension.violation }}</td>
-              <td class="px-4 py-2 text-center">
-                <button class="px-3 py-1 bg-blue-500 text-white rounded-md">Edit</button>
+              <td class="px-4 py-2 text-center text-green-600">
+                1st Offense
               </td>
             </tr>
           </tbody>
@@ -76,7 +76,7 @@
               <th class="px-4 py-2">Driver Name</th>
               <th class="px-4 py-2">Apprehension Place</th>
               <th class="px-4 py-2">Apprehension Type</th>
-              <th class="px-4 py-2">Actions</th>
+              <th class="px-4 py-2">Offense</th>
             </tr>
           </thead>
           <!-- Table body -->
@@ -86,8 +86,8 @@
               <td class="px-4 py-2 text-center">{{ public_conveyance.driver_name }}</td>
               <td class="px-4 py-2 text-center">{{ public_conveyance.apprehension_place }}</td>
               <td class="px-4 py-2 text-center">{{ public_conveyance.apprehension.violation }}</td>
-              <td class="px-4 py-2 text-center">
-                <button class="px-3 py-1 bg-blue-500 text-white rounded-md">Edit</button>
+              <td class="px-4 py-2 text-center text-green-600">
+                1st Offense
               </td>
             </tr>
           </tbody>
