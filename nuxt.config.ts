@@ -8,5 +8,10 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     '@pinia-plugin-persistedstate/nuxt',
   ],
-  ssr: false,
+
+  routeRules: {
+    '/api/auth/**': {
+        cors: true,
+     },
+  },  
 })

@@ -4,33 +4,33 @@
       <div class="mt-3">
         <label for="selectedApprehension" class="block text-sm font-medium text-gray-700 mx-3">Select Apprehension</label>
         <select @change="getViolators(selectedApprehension)" v-model="selectedApprehension" class="px-2 py-1 border border-gray-300 rounded-md m-3">
-        <option v-for="type in apprehensions" :value="type">{{ type }}</option>
+          <option v-for="type in apprehensions" :key="type" :value="type">{{ type }}</option>
         </select>
       </div>
     </div>
 
-    <div class="overflow-x-auto" style="width: 1000px;"> <!-- Adjust width as needed -->
+    <div class="overflow-x-auto w-full"> <!-- Ensure full width here -->
       <!-- Individual Table -->
-      <div v-if="selectedApprehension === 'Individuals'">
+      <div v-if="selectedApprehension === 'Individuals'" class="relative overflow-x-auto w-full">
         <table class="table-auto w-full">
           <!-- Table headers -->
-          <thead>
+          <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
               <th class="px-4 py-2">ID</th>
               <th class="px-4 py-2">Name</th>
               <th class="px-4 py-2">Address</th>
               <th class="px-4 py-2">Apprehension Type</th>
-              <th class="px-4 py-2">Actions</th>
+              <th class="px-4 py-2">Offense</th>
             </tr>
           </thead>
           <!-- Table body -->
-          <tbody>
-            <tr v-for="violator in violators" :key="violator.index" class="border-b border-gray-200">
-              <td class="px-4 py-2 text-center">{{ violator.id }}</td>
-              <td class="px-4 py-2 text-center">{{ violator.firstname + (violator.middlename ? ' ' + violator.middlename : '') + ' ' + violator.lastname }}</td>
-              <td class="px-4 py-2 text-center">{{ violator.address }}</td>
-              <td class="px-4 py-2 text-center">{{ violator.apprehension.violation }}</td>
-              <td class="px-4 py-2 text-center text-green-600">
+          <tbody class="text-center">
+            <tr v-for="violator in violators" :key="violator.index" class="border-b border-gray-200 ">
+              <td class="px-4 py-2">{{ violator.id }}</td>
+              <td class="px-4 py-2">{{ violator.firstname + (violator.middlename ? ' ' + violator.middlename : '') + ' ' + violator.lastname }}</td>
+              <td class="px-4 py-2">{{ violator.address }}</td>
+              <td class="px-4 py-2">{{ violator.apprehension.violation }}</td>
+              <td class="px-4 py-2 text-green-600">
                 1st Offense
               </td>
             </tr>
@@ -39,10 +39,10 @@
       </div>
 
       <!-- Establishments Table -->
-      <div v-if="selectedApprehension === 'Establishments'">
+      <div v-if="selectedApprehension === 'Establishments'" class="relative overflow-x-auto w-full">
         <table class="table-auto w-full">
           <!-- Table headers -->
-          <thead>
+          <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
               <th class="px-4 py-2">ID</th>
               <th class="px-4 py-2">Establishment Name</th>
@@ -67,10 +67,10 @@
       </div>
 
       <!-- Public Conveyances Table -->
-      <div v-if="selectedApprehension === 'Public Conveyances'">
+      <div v-if="selectedApprehension === 'Public Conveyances'" class="relative overflow-x-auto w-full">
         <table class="table-auto w-full">
           <!-- Table headers -->
-          <thead>
+          <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
               <th class="px-4 py-2">ID</th>
               <th class="px-4 py-2">Driver Name</th>
@@ -96,6 +96,7 @@
     </div>
   </div>
 </template>
+
 
 <script>
 import axios from 'axios';
