@@ -116,7 +116,7 @@ export default {
         violatorName = item.name;
         address = item.address;
       } else if (item.type === 'Public Conveyances') {
-        violatorName = item.driver_name;
+        violatorName = `${item.driver_firstname} ${item.driver_middlename ? item.driver_middlename : ''} ${item.driver_lastname}`;
         address = item.apprehension_place;
       } else {
         violatorName = `${item.firstname} ${item.middlename ? item.middlename : ''} ${item.lastname}`;

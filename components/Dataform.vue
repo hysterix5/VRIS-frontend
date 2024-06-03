@@ -45,20 +45,20 @@
         <div class="border-b border-black">
             <div class="m-3">
                 <label for="name" class="block">FIRST NAME<span class="text-red-600">*</span></label>
-                <input v-model="violator.firstname" type="text" class="w-full border" >
+                <input v-model="violator.firstname" @input="updateFirstName" type="text" class="w-full border" >
             </div>
         </div>
 
         <div class="border border-black border-t-0 ">
             <div class="m-3">
                 <label for="course" class="block">MIDDLE NAME</label>
-                <input v-model="violator.middlename" type="text" class="w-full border">
+                <input v-model="violator.middlename" @input="updateMiddleName" type="text" class="w-full border">
             </div>
         </div>
         <div class="border-b border-black">
             <div class="m-3">
                 <label for="year" class="block">LAST NAME<span class="text-red-600">*</span></label>
-                <input v-model="violator.lastname" type="text" class="w-full border" >
+                <input v-model="violator.lastname" @input="updateLastName" type="text" class="w-full border" >
             </div>
         </div>
       </div>
@@ -320,11 +320,27 @@
         <div class="grid grid-cols-3">
           <div class="border-b border-black">
             <div class="m-3">
-              <label for="name" class="block">NAME OF DRIVER<span class="text-red-600">*</span></label>
-              <input v-model="public_conveyances.driver_name" type="text" name="name" id="name" class="w-full border" required>
+              <label for="name" class="block">DRIVER'S FIRST NAME<span class="text-red-600">*</span></label>
+              <input v-model="public_conveyances.driver_firstname" @input="updateDriverFirstname" type="text" name="name" id="name" class="w-full border" required>
             </div>
           </div>
-          <div class="border border-black border-t-0 border-r-0 col-span-2">
+          <div class="border-b border-black">
+            <div class="m-3">
+              <label for="name" class="block">DRIVER'S MIDDLE NAME<span class="text-red-600">*</span></label>
+              <input v-model="public_conveyances.driver_middlename" @input="updateDriverMiddlename" type="text" name="name" id="name" class="w-full border" required>
+            </div>
+          </div>
+          <div class="border-b border-black">
+            <div class="m-3">
+              <label for="name" class="block">DRIVER'S LAST NAME<span class="text-red-600">*</span></label>
+              <input v-model="public_conveyances.driver_lastname" @input="updateDriverLastname" type="text" name="name" id="name" class="w-full border" required>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="grid grid-cols-3">
+          <div class="border border-black border-t-0 border-r-0 border-l-0 col-span-3">
             <div class="m-3">
               <label for="course" class="block">PLACE OF APPREHENSION<span class="text-red-600">*</span></label>
               <input v-model="public_conveyances.apprehension_place" type="text" name="course" id="course" class="w-full border" required>
@@ -412,6 +428,7 @@
   
  <script>
  import axios from 'axios';
+ import Swal from 'sweetalert2';
 
  
  export default {
@@ -451,7 +468,6 @@
          encoded_by: '',
          date_apprehended: '',
          payment_status: '',
-         
        },
        establishment: {
          name: '',
@@ -469,7 +485,9 @@
          payment_status: '',
        },
        public_conveyances: {
-         driver_name: '',
+         driver_firstname: '',
+         driver_middlename: '',
+         driver_lastname: '',
          apprehension_place: '',
          license_no: '',
          plate_no: '',
@@ -495,6 +513,31 @@
     await this.fetchBarangay();
   },
    methods: {
+
+    updateDriverFirstname(event) {
+      this.driverFirstName = event.target.value.toUpperCase();
+      this.public_conveyances.driver_firstname = this.driverFirstName;
+    },
+    updateDriverMiddlename(event) {
+      this.driverMiddleName = event.target.value.toUpperCase();
+      this.public_conveyances.driver_middlename = this.driverMiddleName;
+    },
+    updateDriverLastname(event) {
+      this.driverLastName = event.target.value.toUpperCase();
+      this.public_conveyances.driver_lastname = this.driverLastName;
+    },
+    updateFirstName(event) {
+      this.firstname = event.target.value.toUpperCase();
+      this.violator.firstname = this.firstname;
+    },
+    updateMiddleName(event) {
+      this.midname = event.target.value.toUpperCase();
+      this.violator.middlename = this.midname;
+    },
+    updateLastName(event) {
+      this.lastname = event.target.value.toUpperCase();
+      this.violator.lastname = this.lastname;
+    },
 
     deleteImage(index) {
     // Remove the corresponding image name from the uploadedImageNames array
@@ -570,7 +613,7 @@
     async submitViolator() {
     try {
       // Your form submission logic here
-      this.violator.apprehension_type = this.selectedApprehension;
+    this.violator.apprehension_type = this.selectedApprehension;
     this.violator.cigarette_type = this.cigaretteClassification;
 
 
@@ -582,10 +625,20 @@
     this.resetViolatorForm();
 
 
-      alert('Violator data submitted successfully!');
+      Swal.fire({
+        title: 'Success!',
+        text: 'Violator submitted successfully',
+        icon: 'success',
+        confirmButtonText: 'OK!'
+      })
     } catch (error) {
       console.error('Error submitting violator data:', error.response ? error.response.data.message : error.message);
-      alert('Error submitting violator data. Please try again.');
+      Swal.fire({
+        title: 'Error!',
+        text: 'Error on submitting violators',
+        icon: 'error',
+        confirmButtonText: 'OK!'
+      })
     }
   },
 async submitEstablishment() {
@@ -598,7 +651,12 @@ async submitEstablishment() {
       console.log('Establishment form submitted:', this.establishment);
       // Reset form fields after submission
       this.resetEstablishmentForm();
-      alert('Establishment data submitted successfully!');
+      Swal.fire({
+        title: 'Success!',
+        text: 'Violator submitted successfully',
+        icon: 'success',
+        confirmButtonText: 'OK!'
+      })
     } catch (error) {
       console.error('Error submitting establishment data:', error);
       alert('Error submitting establishment data. Please try again.');
@@ -614,10 +672,20 @@ async submitEstablishment() {
       console.log('Public Conveyances form submitted:', this.public_conveyances);
       // Reset form fields after submission
       this.resetPublicConveyancesForm();
-      alert('Public Conveyances data submitted successfully!');
+      Swal.fire({
+        title: 'Success!',
+        text: 'Violator submitted successfully',
+        icon: 'success',
+        confirmButtonText: 'OK!'
+      })
     } catch (error) {
       console.error('Error submitting public conveyances data:', error);
-      alert('Error submitting public conveyances data. Please try again.');
+      Swal.fire({
+        title: 'Error!',
+        text: 'Error on submitting violators',
+        icon: 'error',
+        confirmButtonText: 'OK!'
+      })
     }
   },
 
@@ -661,7 +729,9 @@ async submitEstablishment() {
      resetPublicConveyancesForm() {
        // Reset public conveyances form fields
        this.public_conveyances = {
-         drivername: '',
+         driver_firstname: '',
+         driver_middlename: '',
+         driver_lastname: '',
          apprehensionPlace: '',
          licenseNumber: '',
          plateNumber: '',

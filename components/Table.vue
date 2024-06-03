@@ -83,7 +83,7 @@
           <tbody>
             <tr v-for="public_conveyance in public_conveyances" :key="public_conveyance.index" class="border-b border-gray-200">
               <td class="px-4 py-2 text-center">{{ public_conveyance.id }}</td>
-              <td class="px-4 py-2 text-center">{{ public_conveyance.driver_name }}</td>
+              <td class="px-4 py-2 text-center">{{ public_conveyance.driver_firstname + (public_conveyance.driver_middlename ? ' ' + public_conveyance.driver_middlename : '') + ' ' + public_conveyance.driver_lastname }}</td>
               <td class="px-4 py-2 text-center">{{ public_conveyance.apprehension_place }}</td>
               <td class="px-4 py-2 text-center">{{ public_conveyance.apprehension.violation }}</td>
               <td class="px-4 py-2 text-center text-green-600">
